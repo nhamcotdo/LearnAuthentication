@@ -1,4 +1,4 @@
-namespace workspace.LearnAuthentication.Common.Schemas
+namespace LearnAuthentication.LearnAuthentication.Common.Schemas
 {
     public class ResponseInfo
     {

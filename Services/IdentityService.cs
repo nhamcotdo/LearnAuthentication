@@ -1,6 +1,6 @@
 using System.Security.Claims;
 
-namespace workspace.LearnAuthentication.Services
+namespace LearnAuthentication.LearnAuthentication.Services
 {
     public interface IIdentityService
     {

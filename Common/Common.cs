@@ -1,4 +1,4 @@
-namespace workspace.LearnAuthentication.Common
+namespace LearnAuthentication.LearnAuthentication.Common
 {
     public class Common
     {
@@ -11,6 +11,8 @@ namespace workspace.LearnAuthentication.Common
 
         public static string C_JWT_AUDIENCE = "Aud";
 
-        public static double API_EXPIRES_MINUTE = 5;
+        public static short API_EXPIRES_MINUTE = 5;
+
+        public static string API_KEY = "apikey";
     }
 }

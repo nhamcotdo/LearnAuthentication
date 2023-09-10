@@ -2,8 +2,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using workspace.LearnAuthentication.Common;
-using workspace.LearnAuthentication.Common.Schemas;
+using LearnAuthentication.LearnAuthentication.Common;
+using LearnAuthentication.LearnAuthentication.Common.Schemas;
 
 namespace LearnAuthentication.Models
 {

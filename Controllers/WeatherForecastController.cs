@@ -25,10 +25,10 @@ public class WeatherForecastController : ControllerBase
         _authModel = authModel;
     }
 
-    [BasicAuthFilter("Admin")]
-    [HttpGet(Name = "GetWeatherForecast")]
-    [MyFilter("WeatherForecastGet")]
-    public IEnumerable<WeatherForecast> Get()
+    [AuthFilter("Admin")]
+    [HttpGet("GetList", Name = "GetListWeatherForecast")]
+    [MyFilter("GetListWeatherForecast")]
+    public IEnumerable<WeatherForecast> GetList()
     {
         _logger.LogInformation("Begin executing : GetWeatherForecast");
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
@@ -38,5 +38,19 @@ public class WeatherForecastController : ControllerBase
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
         .ToArray();
+    }
+
+    [AuthFilter("Nham")]
+    [HttpGet("Get", Name = "GetWeatherForecast")]
+    [MyFilter("WeatherForecastGet")]
+    public WeatherForecast Get(int next)
+    {
+        _logger.LogInformation("Begin executing : WeatherForecastGet");
+        return new WeatherForecast
+        {
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(next)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        };
     }
 }

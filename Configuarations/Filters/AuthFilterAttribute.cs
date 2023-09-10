@@ -5,16 +5,16 @@ using LearnAuthentication.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
-using workspace.LearnAuthentication.Common;
-using workspace.LearnAuthentication.Common.Schemas;
+using LearnAuthentication.LearnAuthentication.Common;
+using LearnAuthentication.LearnAuthentication.Common.Schemas;
 
 namespace LearnAuthentication.Configuarations.Filters
 {
     [AttributeUsage(AttributeTargets.All)]
-    public class BasicAuthFilterAttribute : Attribute, IAsyncAuthorizationFilter
+    public class AuthFilterAttribute : Attribute, IAsyncAuthorizationFilter
     {
         private readonly string _role;
-        public BasicAuthFilterAttribute(string role = null)
+        public AuthFilterAttribute(string role = null)
         {
             _role = role;
         }
@@ -35,6 +35,11 @@ namespace LearnAuthentication.Configuarations.Filters
                     var password = credentials[1];
                     if (await authService?.CheckUser(username, password))
                     {
+                        var roles = await authService.GetRoles(username);
+                        if (!string.IsNullOrEmpty(_role) && !roles.Contains(_role))
+                        {
+                            context.Result = new JsonResult(new ResponseInfo() { Code = StatusCodes.Status403Forbidden, Message = "You are not allowed access this page" });
+                        }
                         return;
                     }
                 }
@@ -63,10 +68,9 @@ namespace LearnAuthentication.Configuarations.Filters
                     };
 
 
-                    SecurityToken validatedToken;
                     var handler = new JwtSecurityTokenHandler();
 
-                    var claimsPrincipal = handler.ValidateToken(token, tokenValidationParameters, out validatedToken);
+                    var claimsPrincipal = handler.ValidateToken(token, tokenValidationParameters, out SecurityToken validatedToken);
                     var roles = claimsPrincipal.Claims.Where(p => p.Type == ClaimTypes.Role).FirstOrDefault()?.Value.Split(',');
                     context.HttpContext.User = new System.Security.Principal.GenericPrincipal(claimsPrincipal.Identity, roles);
 
